@@ -29,9 +29,8 @@ services:
 
     command:
       # - cd ~/demo/python
-      # - source activate OpenCV-master-py3
-      # # - workon OpenCV-master-py3 ;
-      - python3 -m local.py
+      # - python3 -m local.py
+      - cd ~/demo/python ; python3 facialLandmarkDetector.py
       # # - python -m local.py
 
     # # command: bash -c "

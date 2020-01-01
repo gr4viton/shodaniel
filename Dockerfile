@@ -47,14 +47,7 @@ ENV DISPLAY :0
 
 RUN pip3 freeze
 
-# ENTRYPOINT ["/bin/sh", "-c", "$0 \"$@\"", "xeyes"]
-
-# ENTRYPOINT ["./docker-enter.sh"]
-# ENTRYPOINT ["/bin/sh"]
 ENTRYPOINT ["/bin/bash", "-c"]
-
-# ENTRYPOINT ["/bin/echo", "Hello"]
-# CMD ["world"]
 
 # WORKDIR /app
 # COPY requirements/ /app/requirements/
