@@ -23,17 +23,16 @@ RUN apt-get update && apt-get install -y ${apt_packages}
 
 ENV reqs "/app/reqs.in"
 
-ENV VIRTUAL_ENV "/root/.virtualenvs/OpenCV-master-py3/ "
-RUN cd $VIRTUAL_ENV &&\
-  . ./bin/activate &&\
-  pip install -r $reqs
+# from https://pythonspeed.com/articles/activate-virtualenv-dockerfile/
+# emulate the virtual env activate:
+ENV VIRTUAL_ENV=/root/.virtualenvs/OpenCV-master-py3/
+RUN echo "$VIRTUAL_ENV"
+ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
-# ENV PATH="$VIRTUAL_ENV/bin:$PATH"
-
-
+# install deps into virtualenv
+RUN pip3 install -r $reqs
 
 # xeyes-in-docker
-
 RUN rm -rf /tmp/* /usr/share/doc/* /usr/share/info/* /var/tmp/*
 # RUN useradd -ms /bin/bash user
 ENV DISPLAY :0
@@ -52,7 +51,7 @@ RUN pip3 freeze
 
 # ENTRYPOINT ["./docker-enter.sh"]
 # ENTRYPOINT ["/bin/sh"]
-ENTRYPOINT ["/bin/bash"]
+ENTRYPOINT ["/bin/bash", "-c"]
 
 # ENTRYPOINT ["/bin/echo", "Hello"]
 # CMD ["world"]

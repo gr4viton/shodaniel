@@ -24,22 +24,14 @@ services:
 #       - -c
 #       - xeyes
 
-    entrypoint:
-      - /bin/bash
+#     entrypoint:
+#       - /bin/bash
 
-    entrypoint:
-      - /bin/bash
-      # - -c
-      # - workon OpenCv-master-py3
-      # - /bin/sh
-      # - -c
-      # - "$0 \"$@\""
-      # - xeyes
-      # - vlc
+    command:
       # - cd ~/demo/python
       # - source activate OpenCV-master-py3
       # # - workon OpenCV-master-py3 ;
-      # - python3 -m local.py
+      - python3 -m local.py
       # # - python -m local.py
 
     # # command: bash -c "
