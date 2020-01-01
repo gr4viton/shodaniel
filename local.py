@@ -2,7 +2,8 @@
 from vidgear.gears import CamGear
 import cv2
 
-stream = CamGear(source='myvideo.avi').start()  # open any valid video stream(for e.g `myvideo.avi` file)
+
+stream = CamGear(source='a.mkv').start()  # open any valid video stream(for e.g `myvideo.avi` file)
 
 # infinite loop
 while True:

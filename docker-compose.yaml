@@ -1,6 +1,6 @@
 version: '3'
 services:
-  opencv:
+  app:
     build: ./
     volumes:
       # HOST : CONTAINER
@@ -9,38 +9,49 @@ services:
       - "/tmp/.X11-unix:/tmp/.X11-unix"
     ports:
       # HOST : CONTAINER
-      - "5000:5000"
-      - "8888:8888"
+      - "5000:5000"  # X display?
+      - "8888:8888"  # X display?
       - "6900:6900"  # remote debugging pudb
     environment:
       DISPLAY: $DISPLAY
       # CAMERA: opencv / pi / [blank]
     # devices:
-      # - "/dev/video0:/dev/video0"
-    # command:
-    #   - John
-
+    #   - "/dev/video0:/dev/video0"
     entrypoint:
       - /bin/sh
       - -c
+      - xeyes
+
+    # entrypoint:
+    #   - /bin/bash
+      # - /bin/sh
+      # - -c
       # - "$0 \"$@\""
       # - xeyes
-      - vlc
+      # - vlc
+      # - cd ~/demo/python
+      # - source activate OpenCV-master-py3
+      # # - workon OpenCV-master-py3 ;
+      # - python3 -m local.py
+      # # - python -m local.py
 
-    # command: bash -c "
-    #     ./docker-enter.sh
+    # # command: bash -c "
+    # #     ./docker-enter.sh
 
-      # if [[ $dc_option == 'shell' ]]; then
-      #   /bin/bash
-      # else
-      #   ./docker-enter.sh
-      # fi
-      # "
+      # # if [[ $dc_option == 'shell' ]]; then
+      # #   /bin/bash
+      # # else
+      # #   ./docker-enter.sh
+      # # fi
+      # # "
 
 # cd ./flask-video-streaming
 # pip3 freeze
 # python3 app.py
 
+
+## from: https://www.learnopencv.com/install-opencv-docker-image-ubuntu-macos-windows/
+## docker run --device=/dev/video0:/dev/video0 -v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=$DISPLAY -p 5000:5000 -p 8888:8888 -it spmallick/opencv-docker:opencv /bin/bash
 
 #version: '2'
 #services:
@@ -65,5 +76,3 @@ services:
 #  # redis:
 #  #   image: "redis:alpine"
 #  #
-## from: https://www.learnopencv.com/install-opencv-docker-image-ubuntu-macos-windows/
-## docker run --device=/dev/video0:/dev/video0 -v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=$DISPLAY -p 5000:5000 -p 8888:8888 -it spmallick/opencv-docker:opencv /bin/bash

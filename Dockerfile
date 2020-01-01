@@ -3,32 +3,42 @@ FROM spmallick/opencv-docker:opencv
 
 WORKDIR /app
 
+# COPY requirements/ /app/requirements/
+COPY reqs.in /app/reqs.in
 COPY ./docker-enter.sh ./
 
-# Install Video Server
-RUN git clone https://github.com/miguelgrinberg/flask-video-streaming
+## Install Video Server
+# RUN git clone https://github.com/miguelgrinberg/flask-video-streaming
+# RUN ls flask-video-streaming
+# RUN cd flask-video-streaming &&\
+#     pip3 install -r requirements.txt
+# RUN cat flask-video-streaming/requirements.txt 
 
-ENV reqs "requirements.txt"
-RUN ls flask-video-streaming
-RUN cd flask-video-streaming &&\
-    pip3 install -r $reqs
-RUN cat flask-video-streaming/requirements.txt 
+# RUN apt install -y vlc
+
+## mine shodan
+ENV apt_packages "x11-apps"
+RUN apt-get update && apt-get install -y ${apt_packages}
+
+ENV reqs "reqs.in"
+RUN pip3 install -r $reqs
 
 
 # xeyes-in-docker
-RUN apt-get update && apt-get install -y x11-apps
 
 RUN rm -rf /tmp/* /usr/share/doc/* /usr/share/info/* /var/tmp/*
 RUN useradd -ms /bin/bash user
 ENV DISPLAY :0
+# change user! otherwise the gui won't work from docker-compose
+USER user  
 
-RUN apt install -y vlc
- 
-USER user
+RUN pip3 freeze
+
 # ENTRYPOINT ["/bin/sh", "-c", "$0 \"$@\"", "xeyes"]
 
 # ENTRYPOINT ["./docker-enter.sh"]
-# ENTRYPOINT ["/bin/bash"]
+# ENTRYPOINT ["/bin/sh"]
+ENTRYPOINT ["/bin/bash"]
 
 # ENTRYPOINT ["/bin/echo", "Hello"]
 # CMD ["world"]
