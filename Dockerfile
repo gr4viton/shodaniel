@@ -20,17 +20,31 @@ COPY ./docker-enter.sh ./
 ENV apt_packages "x11-apps"
 RUN apt-get update && apt-get install -y ${apt_packages}
 
-ENV reqs "reqs.in"
-RUN pip3 install -r $reqs
+
+ENV reqs "/app/reqs.in"
+
+ENV VIRTUAL_ENV "/root/.virtualenvs/OpenCV-master-py3/ "
+RUN cd $VIRTUAL_ENV &&\
+  . ./bin/activate &&\
+  pip install -r $reqs
+
+# ENV PATH="$VIRTUAL_ENV/bin:$PATH"
+
 
 
 # xeyes-in-docker
 
 RUN rm -rf /tmp/* /usr/share/doc/* /usr/share/info/* /var/tmp/*
-RUN useradd -ms /bin/bash user
+# RUN useradd -ms /bin/bash user
 ENV DISPLAY :0
 # change user! otherwise the gui won't work from docker-compose
-USER user  
+# USER user  
+
+# if you get error
+# No protocol specified
+# QXcbConnection: Could not connect to display :0
+# you may need to run this on your host - localmachine
+# `xhost +local:docker`
 
 RUN pip3 freeze
 

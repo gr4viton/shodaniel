@@ -17,13 +17,20 @@ services:
       # CAMERA: opencv / pi / [blank]
     # devices:
     #   - "/dev/video0:/dev/video0"
-    entrypoint:
-      - /bin/sh
-      - -c
-      - xeyes
 
-    # entrypoint:
-    #   - /bin/bash
+
+#     entrypoint:
+#       - /bin/sh
+#       - -c
+#       - xeyes
+
+    entrypoint:
+      - /bin/bash
+
+    entrypoint:
+      - /bin/bash
+      # - -c
+      # - workon OpenCv-master-py3
       # - /bin/sh
       # - -c
       # - "$0 \"$@\""
