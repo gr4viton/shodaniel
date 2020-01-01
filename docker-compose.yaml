@@ -1,0 +1,69 @@
+version: '3'
+services:
+  opencv:
+    build: ./
+    volumes:
+      # HOST : CONTAINER
+      - ".:/app"
+      - "./src:/app/src"
+      - "/tmp/.X11-unix:/tmp/.X11-unix"
+    ports:
+      # HOST : CONTAINER
+      - "5000:5000"
+      - "8888:8888"
+      - "6900:6900"  # remote debugging pudb
+    environment:
+      DISPLAY: $DISPLAY
+      # CAMERA: opencv / pi / [blank]
+    # devices:
+      # - "/dev/video0:/dev/video0"
+    # command:
+    #   - John
+
+    entrypoint:
+      - /bin/sh
+      - -c
+      # - "$0 \"$@\""
+      # - xeyes
+      - vlc
+
+    # command: bash -c "
+    #     ./docker-enter.sh
+
+      # if [[ $dc_option == 'shell' ]]; then
+      #   /bin/bash
+      # else
+      #   ./docker-enter.sh
+      # fi
+      # "
+
+# cd ./flask-video-streaming
+# pip3 freeze
+# python3 app.py
+
+
+#version: '2'
+#services:
+#  app:
+#    build:
+#      context: .
+#      dockerfile: Dockerfile
+#      # args:
+#      #   - pypi_username=${PYPI_USERNAME}
+#      #   - pypi_password=${PYPI_PASSWORD}
+
+#    ports:  # more info in README.md
+#      # - '8080:8080'
+#      - "6900:6900"  # remote debugging pudb
+#    # env_file:
+#    #   - .env
+#    tty: true
+#    volumes:
+#      # HOST : CONTAINER
+#      - /srv/da/out/:/tmp/frozen
+#      - .:/app
+#  # redis:
+#  #   image: "redis:alpine"
+#  #
+## from: https://www.learnopencv.com/install-opencv-docker-image-ubuntu-macos-windows/
+## docker run --device=/dev/video0:/dev/video0 -v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=$DISPLAY -p 5000:5000 -p 8888:8888 -it spmallick/opencv-docker:opencv /bin/bash
