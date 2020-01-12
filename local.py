@@ -5,6 +5,7 @@ import cv2
 
 stream = CamGear(source='a.mkv').start()  # open any valid video stream(for e.g `myvideo.avi` file)
 
+
 # infinite loop
 while True:
     frame = stream.read()

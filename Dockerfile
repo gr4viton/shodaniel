@@ -39,12 +39,6 @@ ENV DISPLAY :0
 # change user! otherwise the gui won't work from docker-compose
 # USER user  
 
-# if you get error
-# No protocol specified
-# QXcbConnection: Could not connect to display :0
-# you may need to run this on your host - localmachine
-# `xhost +local:docker`
-
 RUN pip3 freeze
 
 ENTRYPOINT ["/bin/bash", "-c"]
