@@ -7,6 +7,7 @@ class Config:
 
     app_name = os.getenv('APP_NAME', 'shodaniel')
     debug = True
+    shodan_api_key = os.getenv("SHODAN_API_KEY", None)
 
 
 config = Config()

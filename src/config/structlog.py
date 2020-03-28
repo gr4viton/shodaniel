@@ -5,7 +5,7 @@ from time import time
 import structlog
 import structlog_pretty
 
-from src.config.base import config
+from src.config import config
 
 
 def configure_structlog():
