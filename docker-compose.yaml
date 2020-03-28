@@ -12,6 +12,8 @@ services:
       - "5000:5000"  # X display?
       - "8888:8888"  # X display?
       - "6900:6900"  # remote debugging pudb
+    env_file:
+      - .env
     environment:
       DISPLAY: $DISPLAY
       # CAMERA: opencv / pi / [blank]
@@ -21,7 +23,10 @@ services:
 
     command:
       # - python3 -m local.py
-      - python3 web_stream.py
+      #
+      # - python3 web_stream.py
+      # - python3 -m dd.shodaniel.crawler
+      - python3 -m shodaniel.src.shodaniel
       # - python3 stalk_the_net.py --host 186.23.221.62:8080
 
     # # command: bash -c "

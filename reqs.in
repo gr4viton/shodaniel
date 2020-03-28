@@ -1,0 +1,7 @@
+ipaddress
+vidgear
+shodan
+attrs
+pudb
+glom
+PyYAML>=3.11
