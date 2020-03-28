@@ -1,3 +1,4 @@
+from attr import attrib, attrs
 from glom import glom
 import cv2
 
@@ -7,8 +8,11 @@ from structlog import get_logger
 log = get_logger(__name__)
 
 
+@attrs
 class StreamerMixinDisplay:
     """Streamer methods which display images."""
+
+    fullscreen = attrib(default=True)
 
     window_name = "streamer"
 
@@ -36,8 +40,15 @@ class StreamerMixinDisplay:
         cv2.imshow(self.window_name, pane)
 
     def display_loop(self):
+        """
 
+        namedWindow
+        - WINDOW_NORMAL - allow resizing = not AUTOSIZE
+        - CV_GUI_NORMAL - without statusbar
+        """
         cv2.namedWindow(self.window_name, cv2.WINDOW_NORMAL)
+        if self.fullscreen:
+            cv2.setWindowProperty(self.window_name, cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
 
         # frame_max = 3
         # frame_max = 1000

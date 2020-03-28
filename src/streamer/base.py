@@ -1,4 +1,3 @@
-from src.stream_thread import StreamThread
 from attr import attrib, attrs
 from src.stream import Stream
 from src.streamer.threads import StreamerMixinThreads
