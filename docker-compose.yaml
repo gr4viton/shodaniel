@@ -20,24 +20,23 @@ services:
     # devices:
     #   - "/dev/video0:/dev/video0"
 
-
     command:
+      # - python3 web_stream.py
+      - /bin/bash
+
       # - python3 -m local.py
       #
-      - python3 web_stream.py
       # - python3 -m dd.shodaniel.crawler
       # - python3 -m shodaniel.src.shodaniel
       # - python3 stalk_the_net.py --host 186.23.221.62:8080
 
-    # # command: bash -c "
-    # #     ./docker-enter.sh
-
-      # # if [[ $dc_option == 'shell' ]]; then
-      # #   /bin/bash
-      # # else
-      # #   ./docker-enter.sh
-      # # fi
-      # # "
+    # command: sh -c "
+    #   if [[ $dc_option == 'shell' ]]; then
+    #     /bin/bash
+    #   else
+    #     python3 web_stream.py
+    #   fi
+    #   "
 
 # cd ./flask-video-streaming
 # pip3 freeze

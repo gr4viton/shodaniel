@@ -4,7 +4,7 @@ FROM spmallick/opencv-docker:opencv
 WORKDIR /app
 
 # COPY requirements/ /app/requirements/
-COPY reqs.in /app/reqs.in
+COPY requirements/base.txt /app/requirements.txt
 COPY ./docker-enter.sh ./
 
 ## Install Video Server
@@ -21,7 +21,7 @@ ENV apt_packages "x11-apps"
 RUN apt-get update && apt-get install -y ${apt_packages}
 
 
-ENV reqs "/app/reqs.in"
+ENV reqs "/app/requirements.txt"
 
 # from https://pythonspeed.com/articles/activate-virtualenv-dockerfile/
 # emulate the virtual env activate:

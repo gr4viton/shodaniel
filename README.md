@@ -9,16 +9,12 @@ shodan search for open webcam streams and random show them in a loop = screensav
 - docker container runs gui via Xserver sharing (sorry applindows)
 - code in python
 
-### packages:
-```
-# viz reqs.in
-shodan
-opencv
-vidgear
-# future
-kivy?
-Qt?
-```
+### packages
+
+- [requirements/base.in](requirements/base.in)
+
+- future?:
+  - kivy, Qt
 
 # plan
 ## classes
@@ -76,6 +72,7 @@ via VNC it should be possible on "any system"
 Make sure you have docker and docker-compose installed.
 ```sh
 docker-compose build
+xhost +local:docker
 docker-compose up
 ```
 
