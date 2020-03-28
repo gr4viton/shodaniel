@@ -102,12 +102,12 @@ but the opencv docker image is done in a way you need to work as root in the doc
 
 # links
 
-[opencv in docker](https://www.learnopencv.com/install-opencv-docker-image-ubuntu-macos-windows/)
-[elegant venv in dockerfile](https://pythonspeed.com/articles/activate-virtualenv-dockerfile/)
+- [opencv in docker](https://www.learnopencv.com/install-opencv-docker-image-ubuntu-macos-windows/)
+- [elegant venv in dockerfile](https://pythonspeed.com/articles/activate-virtualenv-dockerfile/)
 
-[vidgear](https://github.com/abhiTronix/vidgear/wiki/CamGear)
+- [vidgear](https://github.com/abhiTronix/vidgear/wiki/CamGear)
 
-
-[xeyes in docker](https://nelkinda.com/blog/xeyes-in-docker/)
-[rtsp url suffix example](https://community.ui.com/questions/How-do-i-view-Aircam-stream-in-VLC-media-player/44edbcad-f4f1-4e16-9531-faccb3f8cae2)
-[rtsp url documentation](https://www.leadtools.com/help/leadtools/v20/multimedia/transforms/rtsp-source-url-syntax.html)
+- [xeyes in docker](https://nelkinda.com/blog/xeyes-in-docker/)
+- [rtsp url suffix example](https://community.ui.com/questions/How-do-i-view-Aircam-stream-in-VLC-media-player/44edbcad-f4f1-4e16-9531-faccb3f8cae2)
+- [rtsp url documentation](https://www.leadtools.com/help/leadtools/v20/multimedia/transforms/rtsp-source-url-syntax.html)
+- [opencv 3 cameras threads](https://stackoverflow.com/a/54068591/3029008)

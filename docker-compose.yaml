@@ -16,13 +16,16 @@ services:
       - .env
     environment:
       DISPLAY: $DISPLAY
-      # CAMERA: opencv / pi / [blank]
+      STRUCTLOG_PRETTIFY_JSON: 1
+      STRUCTLOG_PRETTIFY_XML: 1
+ # CAMERA: opencv / pi / [blank]
     # devices:
     #   - "/dev/video0:/dev/video0"
 
     command:
-      # - python3 web_stream.py
-      - /bin/bash
+      # - python3 src/streamer.py
+      - python3 -m src.run
+      # - /bin/bash
 
       # - python3 -m local.py
       #
