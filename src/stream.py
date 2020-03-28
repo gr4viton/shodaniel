@@ -46,7 +46,7 @@ class Stream:
 
     def store(self):
         """Store stream data into stream_store."""
-        self.stream_store["name"] = {"frame": self.frame}
+        self.stream_store[self.name] = {"frame": self.frame}
 
     def display_hud(self, frame):
         fps = "?"

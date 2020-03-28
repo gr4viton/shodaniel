@@ -68,7 +68,7 @@ class Streamer:
             return
 
         if len(frames) > 1:
-            cat = [[frames[0]], [frames[1:]]]
+            cat = [[frames[0]], frames[1:]]
             pane = self.concat_tile_resize(cat)
         else:
             pane = frames[0]
