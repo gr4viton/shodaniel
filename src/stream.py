@@ -6,9 +6,16 @@ from vidgear.gears import CamGear
 
 @attrs
 class Stream:
+    name = attrib()
     source = attrib()
+    stream_store = attrib()
 
-    font_setup = dict(fontFace=cv2.FONT_HERSHEY_SIMPLEX, fontScale=1, color=(0, 255, 0), thickness=2, lineType=cv2.LINE_AA)
+    font_setup = dict(
+        fontFace=cv2.FONT_HERSHEY_SIMPLEX, fontScale=1, color=(0, 255, 0), thickness=2, lineType=cv2.LINE_AA
+    )
+
+    frame_count_read = attrib(default=0)
+    frame_count_real = attrib(default=0)
 
     def __attrs_post_init__(self):
         self.log = get_logger(__name__)
@@ -19,37 +26,36 @@ class Stream:
         stream = CamGear(source=self.source).start()
         self.log.info("stream.created")
 
-        frame_max = 1000
-        i_frame = 0
         while True:
             frame = stream.read()
             # read frames
 
-            i_frame += 1
+            self.frame_count_read += 1
 
             if frame is None:
                 break
+            self.frame_count_real += 1
 
-            self.show_hud(frame)
-            cv2.imshow("frame", frame)
+            self.display_hud(frame)
+            self.frame = frame
 
-            enough_frames = i_frame > frame_max
-            pressed_q = self.is_key("q")
-            to_end = pressed_q or enough_frames
-            if to_end:
-                break
+            self.store()
 
         stream.stop()
         self.log.info("stream.stopped")
 
-    def is_key(self, letter):
-        key = cv2.waitKey(1) & 0xFF
-        return key == ord(letter)
+    def store(self):
+        """Store stream data into stream_store."""
+        self.stream_store["name"] = {"frame": self.frame}
 
-    def show_hud(self, frame):
-        txt = "ip: ?"
+    def display_hud(self, frame):
+        fps = "?"
+        txt = "name: {name}, fps: {fps}, frame_count={count}".format(
+            name=self.name, fps=fps, count=self.frame_count_real
+        )
         origin = (42, 42)
         cv2.putText(img=frame, text=txt, org=origin, **self.font_setup)
+
 
 #     @staticmethod
 #     def cam_preview(previewName, camID):
@@ -68,5 +74,3 @@ class Stream:
 #             if key == 27:  # exit on ESC
 #                 break
 #         cv2.destroyWindow(previewName)
-
-

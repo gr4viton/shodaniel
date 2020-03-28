@@ -10,22 +10,11 @@ log = get_logger(__name__)
 class StreamThread(threading.Thread):
     # source = attrib()
 
-    def __init__(self, source):
+    def __init__(self, **init_kwargs):
         threading.Thread.__init__(self)
-        self.source = source
+        self.init_kwargs = init_kwargs
 
     def run(self):
-        print("Starting " + self.previewName)
-        stream = Stream(source=self.source)
-        stream.stream_it()
-
-# Create threads as follows
-thread1 = CamThread("Camera 1", 0)
-thread2 = CamThread("Camera 2", 1)
-thread3 = CamThread("Camera 3", 2)
-
-thread1.start()
-thread2.start()
-thread3.start()
-print()
-print("Active threads", threading.activeCount())
+        log.info("stream_thread.starting")
+        stream = Stream(**self.init_kwargs)
+        stream.start()
