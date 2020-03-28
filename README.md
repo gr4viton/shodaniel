@@ -112,3 +112,4 @@ but the opencv docker image is done in a way you need to work as root in the doc
 - [rtsp url documentation](https://www.leadtools.com/help/leadtools/v20/multimedia/transforms/rtsp-source-url-syntax.html)
 - [opencv 3 cameras threads](https://stackoverflow.com/a/54068591/3029008)
 - [opencv 3 concatenate images](https://note.nkmk.me/en/python-opencv-hconcat-vconcat-np-tile/)
+- [python threading how to kill a thread](https://www.geeksforgeeks.org/python-different-ways-to-kill-a-thread/)

@@ -1,3 +1,5 @@
+from time import sleep
+from glom import glom
 import threading
 from src.stream_thread import StreamThread
 from attr import attrib, attrs
@@ -13,6 +15,7 @@ log = get_logger(__name__)
 class Streamer:
 
     stream_store = attrib(factory=dict)
+    threads = attrib(factory=list)
     concurent_stream_count = attrib(default=3)
 
     streams = None
@@ -31,7 +34,7 @@ class Streamer:
 
         self.streams = []
 
-    def main(self):
+    def load_sources(self):
 
         formats = ["http://{}/shot.json", "https://{}/shot.json", "http://{}", "https://{}"]
 
@@ -41,17 +44,30 @@ class Streamer:
         with open(fname, "r") as fil:
             txt = fil.read()
 
-        ips = txt.split("\n")
+        ips = [line for line in txt.split("\n") if line]
 
         sources = [form.format(ip=ip) for ip in ips]
+        return sources
 
-        # for index, src in enumerate(sources):
-        #     # self.stream_it_safe(src)
-        #     self.stream_via_thread(index, src)
+    def main(self):
 
-        src = sources[1]
-        self.stream_via_thread(1, src)
-        self.stream_via_thread(2, src)
+        sources = self.load_sources()
+
+        for index, src in enumerate(sources):
+            if not src:
+                continue
+            # self.stream_it_safe(src)
+            thread = self.get_stream_thread(index, src)
+            self.threads.append(thread)
+
+        self.threads_start_all()
+        # src = sources[1]
+        # self.stream_via_thread(1, src)
+        # self.stream_via_thread(2, src)
+
+        while threading.activeCount() < 2:
+            log.info("streamer.waiting_for_threads")
+            sleep(1)
 
         self.display_loop()
 
@@ -62,7 +78,13 @@ class Streamer:
         """Aggregate frames from open streams."""
 
         names = sorted(self.stream_store.keys())
-        frames = [self.stream_store[name].get("frame") for name in names]
+        frames = []
+        for name in names:
+            spec = "{name}.output.frame".format(name=name)
+            frame = glom(self.stream_store, spec, default=None)
+            if frame is None:
+                continue
+            frames.append(frame)
 
         if not frames:
             return
@@ -119,16 +141,58 @@ class Streamer:
 
     def suicide(self):
         """Close output window."""
-        log.info("windows.destroy_all")
+        log.info("streamer.suiciding")
+        self.threads_kill_all()
+        log.info("streamer.windows.destroy_all")
         cv2.destroyAllWindows()
 
-    def stream_via_thread(self, index, source):
+    def get_stream_thread(self, index, source):
         name = "stream{index}".format(index=index)
         thread = StreamThread(stream_store=self.stream_store, name=name, source=source)
-        thread.start()
+        return thread
+
+    def threads_start_all(self):
+        log.info("streamer.threads.starting_all")
+        for thread in self.threads:
+            thread.start()
+            count = threading.activeCount()
+            log.info("streamer.threads.started", active_count=count)
+
+    def threads_kill_all(self):
+        log.info("streamer.threads.killing_all")
+        for thread in self.threads:
+            stream_data = self.stream_store[thread.name]
+            if not stream_data:
+                self.warning("streamer.cannot_kill_stream", thread_name=thread.name)
+                continue
+            stream_data["control"]["stop"] = True
+
+        i_thread = -1
+        while self.threads:
+            count = threading.activeCount()
+            log.info("streamer.threads.active", count=count)
+            i_thread += 1
+            if i_thread > len(self.threads) - 1:
+                i_thread = 0
+
+            thread = self.threads[i_thread]
+            stream_data = self.stream_store[thread.name]
+            if not stream_data:
+                self.warning("streamer.cannot_kill_stream", thread_name=thread.name)
+                continue
+
+            else:
+                killed = stream_data["control"].get("killed")
+                if killed:
+                    thread.join()
+                    self.threads.remove(thread)
+                    log.info("streamer.thread", is_alive=thread.isAlive())
+                    continue
+                log.warning("streamer.waiting_for_tread_finishing_as_killed", thread_name=thread.name)
+                sleep(0.3)
 
         count = threading.activeCount()
-        log.info("thread.active", count=count)
+        log.info("streamer.threads.active", count=count)
 
     def stream_it_safe(self, source):
         try:

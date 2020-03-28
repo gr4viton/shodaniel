@@ -10,11 +10,11 @@ log = get_logger(__name__)
 class StreamThread(threading.Thread):
     # source = attrib()
 
-    def __init__(self, **init_kwargs):
+    def __init__(self, name, **init_kwargs):
         threading.Thread.__init__(self)
+        self.name = name
         self.init_kwargs = init_kwargs
 
     def run(self):
-        log.info("stream_thread.starting")
-        stream = Stream(**self.init_kwargs)
+        stream = Stream(name=self.name, **self.init_kwargs)
         stream.start()

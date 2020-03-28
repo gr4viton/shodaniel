@@ -6,6 +6,25 @@ from vidgear.gears import CamGear
 
 @attrs
 class Stream:
+    """
+
+
+    stream_srore is a shared dict
+    each key is accessed by one thread and the main thread
+    ```
+    stream_store = {
+        first_stream_name: {
+            "control": {
+                "killed": False
+            },
+            "output": {
+                "frame": ...,
+                ...
+            }
+        },
+        second_stream_name: {...}
+    ```
+    """
     name = attrib()
     source = attrib()
     stream_store = attrib()
@@ -18,15 +37,57 @@ class Stream:
     frame_count_real = attrib(default=0)
 
     def __attrs_post_init__(self):
-        self.log = get_logger(__name__)
-        self.log_kwargs = dict(source=self.source)
+        log_kwargs = dict(source=self.source, name=self.name)
+        self.log = get_logger(__name__, **log_kwargs)
+        self.stream_store[self.name] = {
+            "control": {
+                "killed": False
+            },
+            "output": {}
+        }
+
+    @property
+    def output(self):
+        stream_dict = self.stream_store.get(self.name)
+        if not stream_dict:
+            return None
+        return stream_dict.get("output")
+
+    @output.setter
+    def output(self, value):
+        self.stream_store[self.name]["output"] = value
+
+    @property
+    def control(self):
+        stream_dict = self.stream_store.get(self.name)
+        if not stream_dict:
+            return None
+        return stream_dict.get("control")
+
+    @property
+    def stopped(self):
+        if not self.control:
+            return False
+        return self.control.get("stop", False)
 
     def start(self):
+        try:
+            self.stream_loop()
+        except Exception:
+            self.log.exception("stream.unhandled_exception")
+        self.kill()
+
+    def kill(self):
+        self.control["killed"] = True
+        self.log.info("stream.killed")
+        # raise SystemExit
+
+    def stream_loop(self):
         self.log.info("stream.creating")
         stream = CamGear(source=self.source).start()
         self.log.info("stream.created")
 
-        while True:
+        while not self.stopped:
             frame = stream.read()
             # read frames
 
@@ -45,8 +106,8 @@ class Stream:
         self.log.info("stream.stopped")
 
     def store(self):
-        """Store stream data into stream_store."""
-        self.stream_store[self.name] = {"frame": self.frame}
+        """Store stream output into stream_store."""
+        self.output = {"frame": self.frame}
 
     def display_hud(self, frame):
         fps = "?"
