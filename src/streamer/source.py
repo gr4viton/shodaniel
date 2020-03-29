@@ -1,3 +1,4 @@
+import random
 from structlog import get_logger
 from src.crawler import Crawler
 
@@ -10,9 +11,14 @@ class StreamerMixinSource:
 
     def load_sources(self):
         # sources = self.sources_from_file()
-        sources = self.crawl_sources()
-        raise A
-        return sources
+        self.crawl_sources()
+
+    def select_random_sources(self):
+        count = 4
+        population = list(self.craw.source_store.values())
+        selected_sources = random.sample(population, count)
+
+        return selected_sources
 
     def crawl_sources(self):
         log.info("streamer.crawling")

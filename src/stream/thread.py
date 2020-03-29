@@ -6,9 +6,7 @@ from structlog import get_logger
 log = get_logger(__name__)
 
 
-# @attrs
 class StreamThread(threading.Thread):
-    # source = attrib()
 
     def __init__(self, name, **init_kwargs):
         threading.Thread.__init__(self)

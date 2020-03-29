@@ -37,7 +37,7 @@ class Stream:
     frame_count_real = attrib(default=0)
 
     def __attrs_post_init__(self):
-        log_kwargs = dict(source=self.source, name=self.name)
+        log_kwargs = dict(source_code=self.source.code, name=self.name)
         self.log = get_logger(__name__, **log_kwargs)
         self.stream_store[self.name] = {
             "control": {
@@ -84,7 +84,7 @@ class Stream:
 
     def stream_loop(self):
         self.log.info("stream.creating")
-        stream = CamGear(source=self.source).start()
+        stream = CamGear(source=self.source.url).start()
         self.log.info("stream.created")
 
         while not self.stopped:

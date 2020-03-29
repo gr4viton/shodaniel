@@ -1,7 +1,7 @@
 import threading
 from time import sleep
 from structlog import get_logger
-from src.stream_thread import StreamThread
+from src.stream.thread import StreamThread
 
 
 log = get_logger(__name__)
@@ -11,15 +11,14 @@ class StreamerMixinThreads:
     """Streamer methods which handles threads."""
 
     def threads_append(self, sources):
-        for index, src in enumerate(sources):
-            if not src:
+        for source in sources:
+            if not source:
                 continue
-            thread = self.get_stream_thread(index, src)
+            thread = self.get_stream_thread(source)
             self.threads.append(thread)
 
-    def get_stream_thread(self, index, source):
-        name = "stream{index}".format(index=index)
-        thread = StreamThread(stream_store=self.stream_store, name=name, source=source)
+    def get_stream_thread(self, source):
+        thread = StreamThread(stream_store=self.stream_store, name=source.code, source=source)
         return thread
 
     def threads_wait_for_started_thread(self):

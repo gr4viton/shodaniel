@@ -12,7 +12,7 @@ log = get_logger(__name__)
 class StreamerMixinDisplay:
     """Streamer methods which display images."""
 
-    fullscreen = attrib(default=True)
+    fullscreen = attrib(default=False)
 
     window_name = "streamer"
 

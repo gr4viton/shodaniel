@@ -35,7 +35,9 @@ class Streamer(StreamerMixinThreads, StreamerMixinSource, StreamerMixinDisplay):
 
     def main(self):
 
-        sources = self.load_sources()
+        self.load_sources()
+
+        sources = self.select_random_sources()
 
         self.threads_append(sources)
         self.threads_start_all()
