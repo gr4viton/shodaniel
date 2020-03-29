@@ -1,6 +1,7 @@
 import random
 from structlog import get_logger
 from src.crawler import Crawler
+from src.stream.source import StreamSource
 
 log = get_logger(__name__)
 
@@ -10,12 +11,16 @@ class StreamerMixinSource:
     craw = None
 
     def load_sources(self):
-        # sources = self.sources_from_file()
+        self.sources_from_file = self.get_sources_from_file()
         self.crawl_sources()
 
     def select_random_sources(self):
-        count = 4
-        population = list(self.craw.source_store.values())
+        # population = list(self.craw.source_store.values())
+        population = self.sources_from_file
+        count = 3
+        if count > len(population):
+            count = len(population)
+
         selected_sources = random.sample(population, count)
 
         return selected_sources
@@ -26,20 +31,12 @@ class StreamerMixinSource:
         sources = self.craw.get_sources()
         return sources
 
-    def sources_from_file(self):
-
-        formats = ["http://{}/shot.json", "https://{}/shot.json", "http://{}", "https://{}"]
-        log.debug("ip_formats", formats=formats)
-
-        form = "rtsp://{ip}:554/live/ch00_0"
-
+    def get_sources_from_file(self):
         fname = "local/ips.txt"
         with open(fname, "r") as fil:
             txt = fil.read()
 
-        ips = [line for line in txt.split("\n") if line]
+        ips = txt.split("\n")
 
-        sources = [form.format(ip=ip) for ip in ips]
+        sources = [StreamSource.from_ip(ip) for ip in ips if ip]
         return sources
-
-
