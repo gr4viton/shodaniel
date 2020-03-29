@@ -34,7 +34,9 @@ class Stream:
         fontFace=cv2.FONT_HERSHEY_SIMPLEX, fontScale=1, color=(0, 255, 0), thickness=2, lineType=cv2.LINE_AA
     )
 
-    sleep_ms = attrib(default=0.5)
+    sleep_frame_sec = attrib(default=0.5)
+    sleep_idle_sec = attrib(default=1)
+
     frame_count_read = attrib(default=0)
     frame_count_real = attrib(default=0)
 
@@ -43,7 +45,8 @@ class Stream:
         self.log = get_logger(__name__, **log_kwargs)
         self.stream_store[self.name] = {
             "control": {
-                "killed": False
+                "stream": self.source.start_streaming,
+                "killed": False,
             },
             "output": {}
         }
@@ -61,15 +64,20 @@ class Stream:
 
     @property
     def control(self):
+        default = {}
         stream_dict = self.stream_store.get(self.name)
         if not stream_dict:
-            return None
-        return stream_dict.get("control")
+            return default
+        return stream_dict.get("control", default)
+
+    @property
+    def streaming(self):
+        """Streamer sets control.stream to True when the stream should stream."""
+        return self.control.get("stream", self.source.start_streaming)
 
     @property
     def stopped(self):
-        if not self.control:
-            return False
+        """Streamer sets control.stop to True when the stream should end."""
         return self.control.get("stop", False)
 
     def start(self):
@@ -90,6 +98,11 @@ class Stream:
         self.log.info("stream.created")
 
         while not self.stopped:
+            if not self.streaming:
+                sleep(self.sleep_idle_sec)
+                self.log.info("straming_off")
+                continue
+
             frame = stream.read()
             # read frames
 
@@ -103,7 +116,7 @@ class Stream:
             self.frame = frame
 
             self.store()
-            sleep(self.sleep_ms)
+            sleep(self.sleep_frame_sec)
 
         stream.stop()
         self.log.info("stream.stopped")

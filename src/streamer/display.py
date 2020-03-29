@@ -20,10 +20,8 @@ class StreamerMixinDisplay:
     def display_pane(self):
         """Aggregate frames from open streams."""
 
-        names = sorted(self.stream_store.keys())
         frames = []
-        for name in names:
-            stream_data = self.stream_store.get(name, None)
+        for name, stream_data in self.stream_store.items():
             frame = glom(stream_data, "output.frame", default=None)
             if frame is None:
                 continue

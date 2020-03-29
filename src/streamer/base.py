@@ -1,4 +1,5 @@
 from attr import attrib, attrs
+from collections import OrderedDict
 from src.stream import Stream
 from src.streamer.threads import StreamerMixinThreads
 from src.streamer.display import StreamerMixinDisplay
@@ -13,11 +14,33 @@ log = get_logger(__name__)
 @attrs
 class Streamer(StreamerMixinThreads, StreamerMixinSource, StreamerMixinDisplay):
 
-    stream_store = attrib(factory=dict)
+    stream_store = attrib(factory=OrderedDict)
     threads = attrib(factory=list)
-    stream_count = attrib(default=6)
 
     streams = None
+
+    _stream_count = 1
+
+    thread_count_offset = attrib(default=1)
+
+    @property
+    def stream_count(self):
+        return self._stream_count
+
+    @stream_count.setter
+    def stream_count(self, value):
+        self._stream_count = value
+        # start / stop threads
+        # let the threads display
+
+    def move_right(self):
+        self.stream_store
+        for i in range(self.stream_count):
+            selected_sources[i].start_streaming = True
+
+    @property
+    def thread_count(self):
+        return self._stream_count + self.thread_count_offset
 
     def __init__(self):
         """

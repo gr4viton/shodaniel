@@ -6,6 +6,8 @@ class StreamSource:
     ip = attrib()
     url = attrib()
 
+    start_streaming = attrib(default=None)
+
     shodan_match = attrib(default=None)
     formats = ["http://{}/shot.json", "https://{}/shot.json", "http://{}", "https://{}"]
 

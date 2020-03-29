@@ -12,6 +12,7 @@ log = get_logger(__name__)
 class Crawler:
 
     API_KEY = config.shodan_api_key
+    _api = None
 
     source_store = attrib(factory=dict)
 
@@ -21,7 +22,9 @@ class Crawler:
 
     def acq_sources(self):
 
-        query = 'boa "Content-Length: 963" country:"US"'
+        # query = 'boa "Content-Length: 963" country:"US"'
+        # query = 'rtsp 200'
+        query = 'port:554 has_screenshot:true'
 
         sources = None
 
@@ -40,6 +43,21 @@ class Crawler:
             self.source_store.update(source_dict)
         return self.source_store
 
+    @property
+    def api(self):
+        if not self._api:
+            self._api = shodan.Shodan(self.API_KEY)
+        return self._api
+
+    def queries_search(self, query):
+        resp = self.api.queries_search(query)
+
+        matches = resp["matches"]
+        for match in matches:
+            txt = str(match).encode('ascii', 'ignore')
+            log.info(txt)
+            log.info("match", **match)
+
     def get_sources_from_query(self, query):
         """
 
@@ -49,9 +67,8 @@ class Crawler:
         - quality etc setting
         - query_time_utc - to deprecate found sources
         """
-        api = shodan.Shodan(self.API_KEY)
 
-        result = api.search(query)
+        result = self.api.search(query)
 
         if not result:
             log.error("crawler.empty_result", hint="is shodan_api_key valid?")
