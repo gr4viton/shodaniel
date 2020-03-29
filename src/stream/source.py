@@ -13,7 +13,9 @@ class StreamSource:
 
     @property
     def code(self):
-        return "source_{ip}".format(ip=self.ip)
+        txt = "source_{ip}".format(ip=self.ip)
+        txt = txt.replace(".", "_")
+        return txt
 
     @classmethod
     def from_shodan_match(cls, match):

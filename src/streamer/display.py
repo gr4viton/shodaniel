@@ -15,6 +15,7 @@ class StreamerMixinDisplay:
     fullscreen = attrib(default=False)
 
     window_name = "streamer"
+    wait_time_ms = 30
 
     def display_pane(self):
         """Aggregate frames from open streams."""
@@ -22,8 +23,8 @@ class StreamerMixinDisplay:
         names = sorted(self.stream_store.keys())
         frames = []
         for name in names:
-            spec = "{name}.output.frame".format(name=name)
-            frame = glom(self.stream_store, spec, default=None)
+            stream_data = self.stream_store.get(name, None)
+            frame = glom(stream_data, "output.frame", default=None)
             if frame is None:
                 continue
             frames.append(frame)

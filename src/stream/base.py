@@ -1,3 +1,4 @@
+from time import sleep
 from attr import attrib, attrs
 import cv2
 from structlog import get_logger
@@ -33,11 +34,12 @@ class Stream:
         fontFace=cv2.FONT_HERSHEY_SIMPLEX, fontScale=1, color=(0, 255, 0), thickness=2, lineType=cv2.LINE_AA
     )
 
+    sleep_ms = attrib(default=0.5)
     frame_count_read = attrib(default=0)
     frame_count_real = attrib(default=0)
 
     def __attrs_post_init__(self):
-        log_kwargs = dict(source_code=self.source.code, name=self.name)
+        log_kwargs = dict(url=self.source.url, name=self.name)
         self.log = get_logger(__name__, **log_kwargs)
         self.stream_store[self.name] = {
             "control": {
@@ -101,6 +103,7 @@ class Stream:
             self.frame = frame
 
             self.store()
+            sleep(self.sleep_ms)
 
         stream.stop()
         self.log.info("stream.stopped")

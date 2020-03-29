@@ -15,9 +15,35 @@ class StreamerMixinSource:
         self.crawl_sources()
 
     def select_random_sources(self):
+        """
+
+        # options
+        stream_count
+        features - has / has not
+            color
+                grayscale
+                dark
+                grayish
+                no_movement
+            weather
+                blue_sky
+                foggy
+            contains = detect object in scene (futureeee)
+                car
+                people
+                3d printer
+                room
+                house
+                ...
+        convert
+            color
+                to_grayscale - make colored images grayscale
+
+        """
         # population = list(self.craw.source_store.values())
         population = self.sources_from_file
-        count = 3
+
+        count = self.stream_count
         if count > len(population):
             count = len(population)
 

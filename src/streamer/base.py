@@ -15,10 +15,9 @@ class Streamer(StreamerMixinThreads, StreamerMixinSource, StreamerMixinDisplay):
 
     stream_store = attrib(factory=dict)
     threads = attrib(factory=list)
-    concurent_stream_count = attrib(default=3)
+    stream_count = attrib(default=6)
 
     streams = None
-    wait_time_ms = 30
 
     def __init__(self):
         """
