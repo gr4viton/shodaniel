@@ -17,6 +17,7 @@ shodan search for open webcam streams and random show them in a loop = screensav
   - kivy, Qt
 
 # plan
+
 ## classes
 
 Streamer
@@ -46,6 +47,20 @@ StreamQueue
 - method
     - add() - adds new Stream
     - next()
+
+## todo
+- basic working concept
+  - find streams
+  - show streams
+  - list through them
+  - auto rotate
+- stream filtering
+  - as to what to show
+- another displaying option
+  - make it multi platform
+  - skip X from docker
+    - use rtsp stream and vlc on local host machin
+    - flask / fastapi for the control of streamer
 
 
 # test
