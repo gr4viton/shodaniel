@@ -1,5 +1,4 @@
 from attr import attrib, attrs
-from collections import OrderedDict
 from src.stream import Stream
 from src.streamer.threads import StreamerMixinThreads
 from src.streamer.display import StreamerMixinDisplay

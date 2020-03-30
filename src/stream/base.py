@@ -29,6 +29,7 @@ class Stream:
     name = attrib()
     source = attrib()
     stream_store = attrib()
+    interface = attrib(init=False)
 
     font_setup = dict(
         fontFace=cv2.FONT_HERSHEY_SIMPLEX, fontScale=1, color=(0, 255, 0), thickness=2, lineType=cv2.LINE_AA
@@ -50,6 +51,9 @@ class Stream:
             },
             "output": {}
         }
+
+    def output_dict(self):
+        return {}
 
     @property
     def output(self):
@@ -115,15 +119,17 @@ class Stream:
             self.display_hud(frame)
             self.frame = frame
 
-            self.store()
+            self.interface.store_output()
             sleep(self.sleep_frame_sec)
 
         stream.stop()
         self.log.info("stream.stopped")
 
-    def store(self):
+    def store_output(self):
         """Store stream output into stream_store."""
-        self.output = {"frame": self.frame}
+        self.output = {
+            "frame": self.frame
+        }
 
     def display_hud(self, frame):
         fps = "?"
