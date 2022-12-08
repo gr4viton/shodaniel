@@ -4,30 +4,67 @@
 #
 #    pip-compile --output-file=requirements/base.txt requirements/base.in
 #
-attrs==19.3.0             # via -r requirements/base.in, glom
-boltons==20.0.0           # via face, glom
-certifi==2019.11.28       # via requests
-chardet==3.0.4            # via requests
-click-plugins==1.1.1      # via shodan
-click==7.1.1              # via click-plugins, shodan
-colorama==0.4.3           # via shodan
-colorlog==4.1.0           # via vidgear
-face==20.1.1              # via glom
-glom==19.10.0             # via -r requirements/base.in
-idna==2.9                 # via requests
-ipaddress==1.0.23         # via -r requirements/base.in
-mss==5.0.0                # via vidgear
-pafy==0.5.5               # via vidgear
-pudb==2019.2              # via -r requirements/base.in
-pygments==2.6.1           # via pudb, structlog-pretty
-pyzmq==19.0.0             # via vidgear
-requests==2.23.0          # via shodan, vidgear
-shodan==1.22.0            # via -r requirements/base.in
-six==1.14.0               # via structlog
-structlog-pretty==0.1.1   # via -r requirements/base.in
-structlog==20.1.0         # via -r requirements/base.in
-urllib3==1.25.8           # via requests
-urwid==2.1.0              # via pudb
-vidgear==0.1.6            # via -r requirements/base.in
-xlsxwriter==1.2.8         # via shodan
-youtube-dl==2020.3.24     # via vidgear
+attrs==19.3.0
+    # via
+    #   -r base.in
+    #   glom
+boltons==20.0.0
+    # via
+    #   face
+    #   glom
+certifi==2022.12.7
+    # via requests
+chardet==3.0.4
+    # via requests
+click==7.1.1
+    # via
+    #   click-plugins
+    #   shodan
+click-plugins==1.1.1
+    # via shodan
+colorama==0.4.3
+    # via shodan
+colorlog==4.1.0
+    # via vidgear
+face==20.1.1
+    # via glom
+glom==19.10.0
+    # via -r base.in
+idna==2.9
+    # via requests
+ipaddress==1.0.23
+    # via -r base.in
+mss==5.0.0
+    # via vidgear
+pafy==0.5.5
+    # via vidgear
+pudb==2019.2
+    # via -r base.in
+pygments==2.6.1
+    # via
+    #   pudb
+    #   structlog-pretty
+pyzmq==19.0.0
+    # via vidgear
+requests==2.23.0
+    # via
+    #   shodan
+    #   vidgear
+shodan==1.22.0
+    # via -r base.in
+six==1.14.0
+    # via structlog
+structlog==20.1.0
+    # via -r base.in
+structlog-pretty==0.1.1
+    # via -r base.in
+urllib3==1.25.8
+    # via requests
+urwid==2.1.0
+    # via pudb
+vidgear==0.1.6
+    # via -r base.in
+xlsxwriter==1.2.8
+    # via shodan
+youtube-dl==2020.3.24
+    # via vidgear
